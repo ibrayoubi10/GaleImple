@@ -44,7 +44,7 @@ git clone https://github.com/ibrayoubi10/GaleImple.git
 
 # accéder au dossier et exécuter le script
 cd GaleImple
-python/python3 gale_implementation.py
+python/python3 simple_implementation.py
 ```
 
 ## Auteurs
