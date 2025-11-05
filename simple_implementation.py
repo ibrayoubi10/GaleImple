@@ -1,21 +1,7 @@
 from collections import deque
 
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Implémentation de l'algorithme de Gale-Shapley (mariage stable).
-Fichier: gale_implementation.py
-
-Usage: exécuter ce fichier. Il applique l'algorithme sur un exemple et vérifie la stabilité.
-"""
-
-
 def gale_shapley(men_prefs, women_prefs):
-    """
-    men_prefs: dict homme -> list de femmes triées par préférence (meilleure d'abord)
-    women_prefs: dict femme -> list d'hommes triés par préférence (meilleure d'abord)
-    Retourne: dict homme -> femme (matching stable, hommes proposant)
-    """
+    
     # Préparer indices rapides et structures
     # Pour chaque femme, construire un dict de rang pour comparaison rapide
     women_rank = {
