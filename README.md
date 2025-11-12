@@ -1,3 +1,6 @@
+#etutidaiants etablissements
+lien collab:https://colab.research.google.com/drive/1fzB_QizHR1JmAg5GIK9u7z_8cJAInjh5?usp=sharing
+
 # 🧩 GaleImple  
 > Implémentation étendue et expérimentale de l’algorithme de Gale–Shapley
 
