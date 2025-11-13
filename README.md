@@ -1,54 +1,60 @@
-#etutidaiants etablissements
-lien collab:https://colab.research.google.com/drive/1fzB_QizHR1JmAg5GIK9u7z_8cJAInjh5?usp=sharing
+# 🧩 Gale - Shapley  
 
-# 🧩 GaleImple  
-> Implémentation étendue et expérimentale de l’algorithme de Gale–Shapley
 
 ![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
 ![Status](https://img.shields.io/badge/statut-en%20développement-yellow.svg)
 
----
-
 ## 📘 Présentation
 
-**GaleImple** est un projet en **Python** qui implémente et étend l’**algorithme de mariage stable** (Stable Matching Problem) proposé par **David Gale** et **Lloyd Shapley**.  
-Le but est d’explorer et de simuler différents **scénarios d’appariement** entre deux ensembles (ex. : élèves–établissements, candidats–entreprises), en introduisant la possibilité de **gérer plusieurs ensembles de valeurs** ou de **préférences multiples**.
+**GaleImple** est un projet en **Python** qui propose une version **structurée, modulaire et extensible** de l’**algorithme de mariage stable** de **Gale–Shapley**.
+ 
+Le but est d’explorer et de simuler différents **scénarios d’appariement** entre deux ensembles (ex. : élèves–établissements, candidats–entreprises)
 
-Ce projet s’inscrit dans le cadre du module **Aide à la décision – M2 Informatique (IASD)**.
+## Architecture du projet
 
----
+```text
+GaleImple/
+│
+├── core.py            # Génération des préférences + Algorithme Gale–Shapley
+├── analysis.py        # Calcul de satisfaction et métriques
+├── experiments.py     # Lancement automatisé de plusieurs scénarios
+├── visuals.py         # Graphiques et visualisations
+├── main.py            # Point d’entrée du projet (exécutions complètes)
+```
 
-## ⚙️ Fonctionnalités
+## 🎯 Objectifs du projet
 
-- 🧠 Implémentation complète de l’algorithme de **Gale–Shapley**  
-- 🔁 Prise en charge de **préférences multiples** et de **valeurs pondérées**  
-- 📊 Analyse de la **stabilité** et de l’**optimalité** des appariements  
-- 🧮 Simulation de **plusieurs scénarios d’affectation**  
-- 💾 Code modulaire et facilement extensible  
 
----
+1. **Implanter un programme** pour générer des préférences aléatoires  
+   pour les étudiants et les établissements.
+2. **Implanter l’algorithme du mariage stable** (Gale–Shapley).
+3. **Proposer une méthode de mesure de satisfaction**,  
+   pour les étudiants et pour les établissements,  
+   et **l’intégrer dans l’implantation**.
+4. **Tester le programme** sur plusieurs jeux de données.
+5. **Proposer une extension théorique** permettant l’intégration  
+   des **représentations compactes des préférences** vues en cours  
+   (sans implantation pratique).
+ 
 
-## 💡 Principe de l’algorithme
 
-L’algorithme de **Gale–Shapley** vise à trouver un **appairage stable** entre deux groupes (par exemple, des étudiants et des écoles).  
-Un appariement est dit **stable** lorsqu’aucun couple n’a intérêt à se séparer de son partenaire actuel pour un autre choix mutuellement préférable.
-
-🧩 Exemple :  
-> Si un élève A préfère l’école X à son affectation actuelle, mais que l’école X préfère déjà un autre élève à A, alors la situation reste stable.  
-> Si les deux se préfèrent mutuellement, la stabilité est rompue.
-
----
 
 ## 🚀 Installation et exécution
+1️⃣ Cloner le dépôt
 
 ```bash
 # cloner le dépôt
 git clone https://github.com/ibrayoubi10/GaleImple.git
 
-# accéder au dossier et exécuter le script
+# accéder au dossier
 cd GaleImple
-python/python3 simple_implementation.py
 ```
+2️⃣ Exécuter la version modulaire
+```bash
+python3 main.py
+```
+Cela lance plusieurs scénarios, affiche un rapport détaillé,
+puis génère des visualisations (distribution des rangs, satisfaction globale…).
 
 ## Auteurs
 - Al Ayoubi Ibrahim
@@ -57,3 +63,4 @@ python/python3 simple_implementation.py
 - Toukebri Dhia
 
 ## 🏫 UFR Sciences de Montpellier
+Ce projet est réalisé dans le cadre du module **Aide à la décision – M2 Informatique (IASD)**.
