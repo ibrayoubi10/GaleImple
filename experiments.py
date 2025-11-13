@@ -1,5 +1,7 @@
 """
-Module pour lancer des expériences sur l'algorithme de Gale-Shapley
+Module pour lancer des expériences sur l'algorithme de Gale-Shapley.
+
+Correspond à la question 4 du Projet Stable Marriage.
 """
 
 from __future__ import annotations
@@ -8,11 +10,7 @@ from typing import Dict, Any, List
 from core import GenerateurPreferences, AlgorithmeGaleShapley
 from analysis import AnalyseurSatisfaction
 
-
 class TesteurAlgorithme:
-    """
-    Lance plusieurs expériences et stocke les résultats.
-    """
     def __init__(self) -> None:
         self.resultats: List[Dict[str, Any]] = []
 

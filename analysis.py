@@ -9,7 +9,6 @@ from typing import Dict, List, Any
 import numpy as np
 from collections import Counter
 
-
 class AnalyseurSatisfaction:
 
     def __init__(
@@ -38,14 +37,9 @@ class AnalyseurSatisfaction:
             rangs.append(rang)
         return rangs
 
-    # ---------- METRIQUES ----------
-
     def satisfaction_normalise(self, rangs: List[int], n_max: int) -> float:
         """
         Satisfaction normalisée entre 0 et 1.
-
-        1 = tous ont leur premier choix (rang 0)
-        0 = tous ont leur dernier choix (rang n_max - 1)
         """
         if not rangs:
             return 0.0
@@ -57,10 +51,8 @@ class AnalyseurSatisfaction:
         """Retourne un dict rang -> nombre d'agents."""
         return dict(Counter(rangs))
 
-    # ---------- RAPPORT COMPLET ----------
-
+    # rapport complet
     def rapport_complet(self) -> Dict[str, Any]:
-        """Génère un rapport complet de satisfaction (sans affichage)."""
         rangs_etu = self.calculer_rangs_etudiants()
         rangs_etab = self.calculer_rangs_etablissements()
 
@@ -91,11 +83,8 @@ class AnalyseurSatisfaction:
 
         return rapport
 
-
-# ---------- AFFICHAGE CONSOLE SÉPARÉ ----------
-
+# affichage console
 def _afficher_distribution_console(distribution: Dict[int, int]) -> None:
-    """Affiche un histogramme textuel à partir d'un dict rang -> count."""
     if not distribution:
         print("  (aucune donnée)")
         return
@@ -116,7 +105,6 @@ def _afficher_distribution_console(distribution: Dict[int, int]) -> None:
 
 
 def afficher_rapport_console(rapport: Dict[str, Any]) -> None:
-    """Affiche joliment le rapport de satisfaction."""
 
     print("\n" + "=" * 80)
     print("RAPPORT DE SATISFACTION")

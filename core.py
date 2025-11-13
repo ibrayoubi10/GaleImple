@@ -5,7 +5,6 @@ et une implémentation de l'algorithme de Gale-Shapley.
 Correspond à la question 1 et 2 du Projet Stable Marriage.
 """
 
-# core.py
 from __future__ import annotations
 from typing import Dict, List, Tuple, Any
 import random
@@ -13,9 +12,7 @@ import numpy as np
 
 
 class GenerateurPreferences:
-    """
-    Génère des préférences aléatoires pour étudiants et établissements.
-    """
+
     def __init__(self, n_etudiants: int, n_etablissements: int, seed: int | None = None) -> None:
         self.n_etudiants = n_etudiants
         self.n_etablissements = n_etablissements
@@ -50,9 +47,6 @@ class GenerateurPreferences:
 
 
 class AlgorithmeGaleShapley:
-    """
-    Implémentation de l'algorithme de Gale–Shapley (version étudiants qui proposent).
-    """
     def __init__(
         self,
         pref_etudiants: Dict[int, List[int]],
@@ -68,17 +62,12 @@ class AlgorithmeGaleShapley:
         self.historique: List[Dict[str, Any]] = []
 
     def _score_etablissement(self, etab: int) -> Dict[int, int]:
-        """
-        Retourne un dict: étudiant -> rang dans la préférence de l'établissement.
-        Plus petit = plus préféré.
-        """
+
         ordre = self.pref_etablissements[etab]
         return {etu: rang for rang, etu in enumerate(ordre)}
 
     def executer(self, verbose: bool = False) -> Dict[int, int]:
-        """
-        Retourne un dictionnaire: {etudiant -> etablissement}
-        """
+
         libres = set(self.pref_etudiants.keys())
         index_proposition: Dict[int, int] = {etu: 0 for etu in self.pref_etudiants}
         appariement_etab: Dict[int, int] = {}
@@ -137,10 +126,9 @@ class AlgorithmeGaleShapley:
         })
 
 
-# ==========================
-#  Bloc de test local
-# ==========================
+# test local 
 
+"""
 if __name__ == "__main__":
 
     n_etudiants = 15
@@ -168,3 +156,4 @@ if __name__ == "__main__":
     print("\nAppariement final (étudiant -> établissement) :")
     for etu, etab in appariement_etu.items():
         print(f"  Étudiant {etu} → Établissement {etab}")
+"""

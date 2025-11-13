@@ -1,4 +1,3 @@
-# visuals.py
 from __future__ import annotations
 from typing import Any
 
@@ -9,8 +8,6 @@ import numpy as np
 def creer_visualisations(testeur: Any) -> None:
     """
     Exemple : histogrammes des rangs étudiants pour chaque scénario.
-    'testeur' est une instance de TesteurAlgorithme ou tout objet
-    ayant un attribut .resultats de la bonne forme.
     """
     for res in testeur.resultats:
         nom = res["nom"]
@@ -33,11 +30,6 @@ def tracer_satisfaction(testeur: Any) -> None:
     """
     Trace un graphique comparant, pour chaque scénario, la satisfaction
     (en %) des étudiants et des établissements.
-    On suppose que chaque élément de testeur.resultats contient :
-      - "nom" : nom du scénario
-      - "rapport" : dict avec clés
-          * "satisfaction_etudiants"
-          * "satisfaction_etablissements"
     """
     noms: list[str] = []
     sat_etu: list[float] = []
