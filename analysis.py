@@ -70,7 +70,6 @@ class AnalyseurSatisfaction:
             "satisfaction_globale": (sat_etu + sat_etab) / 2.0,
             "premiers_choix_etudiants": sum(1 for r in rangs_etu if r == 0),
             "premiers_choix_etablissements": sum(1 for r in rangs_etab if r == 0),
-            "cout_social": int(sum(rangs_etu) + sum(rangs_etab)),
             "rang_moyen_etudiants": float(np.mean(rangs_etu)) if rangs_etu else 0.0,
             "rang_moyen_etablissements": float(np.mean(rangs_etab)) if rangs_etab else 0.0,
             "rang_median_etudiants": float(np.median(rangs_etu)) if rangs_etu else 0.0,
@@ -110,13 +109,13 @@ def afficher_rapport_console(rapport: Dict[str, Any]) -> None:
     print("RAPPORT DE SATISFACTION")
     print("=" * 80)
 
-    print(f"\n📊 MÉTRIQUES PRINCIPALES")
+    print(f"\n MÉTRIQUES PRINCIPALES")
     print("-" * 80)
     print(f"Satisfaction des étudiants       : {rapport['satisfaction_etudiants']:.2%} ⭐")
     print(f"Satisfaction des établissements  : {rapport['satisfaction_etablissements']:.2%}")
     print(f"Satisfaction globale             : {rapport['satisfaction_globale']:.2%}")
 
-    print(f"\n🎯 PREMIERS CHOIX")
+    print(f"\n PREMIERS CHOIX")
     print("-" * 80)
     n_etu = len(rapport["rangs_etudiants"])
     n_etab = len(rapport["rangs_etablissements"])
@@ -129,18 +128,17 @@ def afficher_rapport_console(rapport: Dict[str, Any]) -> None:
         f"({rapport['premiers_choix_etablissements'] / n_etab * 100:.1f}%)"
     )
 
-    print(f"\n📈 STATISTIQUES DES RANGS")
+    print(f"\n STATISTIQUES DES RANGS")
     print("-" * 80)
     print(f"Rang moyen - Étudiants           : {rapport['rang_moyen_etudiants']:.2f}")
     print(f"Rang moyen - Établissements      : {rapport['rang_moyen_etablissements']:.2f}")
     print(f"Rang médian - Étudiants          : {rapport['rang_median_etudiants']:.1f}")
     print(f"Rang médian - Établissements     : {rapport['rang_median_etablissements']:.1f}")
-    print(f"Coût social total                : {rapport['cout_social']}")
 
-    print(f"\n📊 DISTRIBUTION DES RANGS - ÉTUDIANTS")
+    print(f"\n DISTRIBUTION DES RANGS - ÉTUDIANTS")
     print("-" * 80)
     _afficher_distribution_console(rapport["distribution_rangs_etudiants"])
 
-    print(f"\n📊 DISTRIBUTION DES RANGS - ÉTABLISSEMENTS")
+    print(f"\n DISTRIBUTION DES RANGS - ÉTABLISSEMENTS")
     print("-" * 80)
     _afficher_distribution_console(rapport["distribution_rangs_etablissements"])

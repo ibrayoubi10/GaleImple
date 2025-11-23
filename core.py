@@ -58,7 +58,7 @@ class AlgorithmeGaleShapley:
         self.n_etudiants = len(pref_etudiants)
         self.n_etablissements = len(pref_etablissements)
 
-        # Historique des étapes si tu veux analyser ou visualiser
+        # historique des étapes de l'algorithme
         self.historique: List[Dict[str, Any]] = []
 
     def _score_etablissement(self, etab: int) -> Dict[int, int]:
@@ -86,6 +86,8 @@ class AlgorithmeGaleShapley:
                 continue
 
             etab = prefs[index_proposition[etu]]
+            
+            # étape importante pour suivre les propositions
             index_proposition[etu] += 1
 
             self._enregistrer_etape(etu, etab, appariement_etab)

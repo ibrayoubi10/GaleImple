@@ -1,6 +1,6 @@
 from experiments import TesteurAlgorithme
 from analysis import afficher_rapport_console
-from visuals import creer_visualisations, tracer_satisfaction
+from visuals import Visuals
 
 
 def main() -> None:
@@ -9,11 +9,11 @@ def main() -> None:
     # liste des scénarios 
     scenarios = [
         (10, 10, 42, "Scenario 10x10"),
-        (20, 20, 1, "Scenario 20x20"),
-        (50,   50,    2, "Scenario 50x50"),
-        (100, 100,    3, "Scenario 100x100"),
-        (200, 200,    4, "Scenario 200x200"),
-        (500, 500,    5, "Scenario 500x500"),
+        (20, 20, 55, "Scenario 20x20"),
+        (50,   50,    15, "Scenario 50x50"),
+        (100, 100,    26, "Scenario 100x100"),
+        (200, 200,    19, "Scenario 200x200"),
+        (500, 500,    11, "Scenario 500x500"),
     ]
 
     for i, (n_etu, n_etab, seed, nom) in enumerate(scenarios):
@@ -30,11 +30,9 @@ def main() -> None:
             afficher_rapport_console(res["rapport"])
 
     #visuals
-    print("\nGénération des histogrammes de rangs pour les petits scénarios...")
-    creer_visualisations(testeur)
-
-    print("\nGénération du graphique de satisfaction globale...")
-    tracer_satisfaction(testeur)
+    
+    vis = Visuals(testeur)
+    vis.dashboard()
 
 
 if __name__ == "__main__":
