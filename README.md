@@ -34,7 +34,7 @@ GaleImple/
 4. **Tester le programme** sur plusieurs jeux de données.
 5. **Proposer une extension théorique** permettant l’intégration  
    des **représentations compactes des préférences** vues en cours  
-   (sans implantation pratique).
+   (sans implantation pratique); application des algorithmes deja vue en cours sur notre propre cas d'usage.
  
 
 
