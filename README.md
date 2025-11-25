@@ -14,12 +14,20 @@ Le but est d’explorer et de simuler différents **scénarios d’appariement**
 
 ```text
 GaleImple/
+project/
 │
-├── core.py            # Génération des préférences + Algorithme Gale–Shapley
-├── analysis.py        # Calcul de satisfaction et métriques
-├── experiments.py     # Lancement automatisé de plusieurs scénarios
-├── visuals.py         # Graphiques et visualisations
-├── main.py            # Point d’entrée du projet (exécutions complètes)
+├── __init__.py         
+├── main.py             
+├── rapport_final.pdf   
+│
+└── src/    
+    ├── core.py         
+    ├── analysis.py     
+    ├── experiments.py  
+    ├── visuals.py      
+└── rapport/
+    ├── main.tex       
+    ├── images.png     
 ```
 
 ## 🎯 Objectifs du projet
