@@ -1,0 +1,358 @@
+\documentclass[12pt]{article} % Police agrandie par défaut
+\usepackage[a4paper, margin=2cm]{geometry} % Réduction des marges
+\usepackage{graphicx} % Pour les images
+\usepackage{setspace} % Pour ajuster l'interligne
+\usepackage{titlesec} % Pour agrandir les titres
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{amsmath}
+\usepackage{float} % Pour l'option [H] des figures
+
+
+% --- Mise en forme des titres ---
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}
+{\MakeUppercase}
+
+% --- Interligne légèrement augmenté pour la lisibilité ---
+\onehalfspacing
+
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+
+% --- Lignes horizontales et Titre ---
+\rule{\textwidth}{0.5pt}\\[0.4cm]
+{\Huge\bfseries Aide à la décision}\\[0.3cm]
+{\LARGE\bfseries M2 Informatique - IASD}\\[0.2cm]
+{\Large 2025--2026}\\[0.4cm]
+\rule{\textwidth}{0.5pt}\\[2cm]
+
+% --- Auteurs ---
+{\Large\bfseries Auteurs}\\[0.5cm]
+{\large
+AL AYOUBI Ibrahim\\
+BELGUITH Rami\\
+KAMMOUN Habib\\
+TOUKEBRI Dhia
+}\\[2cm]
+
+% --- Encadrant ---
+{\Large\bfseries Encadrant}\\[0.5cm]
+{\large KACI Souhila}\\[2cm]
+
+% --- Logo ---
+\includegraphics[width=0.4\textwidth]{test.png}\\[0.5cm]
+
+\end{center}
+\end{titlepage}
+
+\section{Introduction}
+
+Ce projet porte sur l'étude du problème du mariage stable. 
+Ce problème consiste à appairer deux groupes, ici des étudiants et des établissements, en tenant compte de leurs préférences respectives.
+L’objectif est de produire un appariement stable. 
+Un appariement est stable lorsqu’aucun étudiant et aucun établissement ne préfèrent se réapparier ensemble plutôt que conserver leur affectation actuelle.
+Ce projet s’inscrit dans le cadre du cours d’Aide à la Décision (IASD). 
+Il vise à analyser l’Algorithme du mariage stable, à générer des préférences aléatoires, à mesurer la satisfaction des agents et à tester le système sur plusieurs jeux de données.
+Nous proposons également une extension théorique pour intégrer des représentations compactes des préférences, telles que vues dans le cours.
+
+\section{Problématique}
+
+Le problème du mariage stable consiste à appairer deux ensembles de participants, par exemple des étudiants et des établissements. 
+Chaque étudiant exprime un classement des établissements. 
+Chaque établissement exprime également un classement des étudiants.
+L’objectif est de produire un appariement stable. 
+Autrement dit, il ne doit exister aucun couple étudiant--établissement ayant intérêt à s'associer entre eux plutôt que de conserver leurs affectations.
+Cette notion de stabilité est essentielle. 
+Elle garantit qu’aucun agent ne souhaite changer unilatéralement de partenaire. 
+Elle permet aussi d’éviter les situations de blocage ou d’injustice dans les systèmes d’affectation.
+Ce problème trouve des applications concrètes : affectation scolaire, recrutement hospitalier, attribution de logements universitaires ou encore marchés du travail organisés.
+Dans ce projet, nous analysons le modèle classique et nous proposons des outils supplémentaires pour évaluer la satisfaction des participants.
+
+\section{Méthodologie}
+
+Notre étude suit les quatre premières étapes définies dans le sujet.
+
+\subsection{Génération des préférences}
+Nous avons implanté un module capable de générer automatiquement les préférences des étudiants et des établissements.  
+Les préférences sont aléatoires, complètes et strictes.  
+Le générateur s’appuie sur une fonction de permutation, ce qui garantit que chaque agent dispose d’un classement cohérent.
+
+\subsection{Implémentation de l’algorithme de Gale--Shapley}
+Nous avons programmé la version classique de l’algorithme à propositions étudiantes.  
+L’algorithme fonctionne par itérations simples:  
+\begin{itemize}
+    \item tous les étudiants commencent libres;
+    \item chacun propose à l’établissement le mieux classé parmi ceux qu’il n’a pas encore sollicités;
+    \item l’établissement accepte temporairement le meilleur candidat selon ses préférences;
+    \item un étudiant moins bien classé peut être rejeté et redevenir libre.
+\end{itemize}
+
+Ce processus se répète jusqu’à ce qu’aucun étudiant libre ne puisse proposer à un nouvel établissement.  
+L’appariement obtenu est garanti stable.
+
+\section{Mesure de la satisfaction }
+
+Afin d'évaluer la qualité des appariements produits par l’algorithme de Gale--Shapley, nous avons défini une mesure de satisfaction appliquée à chaque groupe d’agents : les étudiants et les établissements.
+
+\subsection{Rang du partenaire obtenu}
+
+Pour chaque étudiant, nous calculons le rang de l’établissement auquel il est affecté dans sa liste de préférences.  
+Un rang égal à $0$ correspond au premier choix, un rang égal à $1$ au deuxième choix, et ainsi de suite.  
+Le même principe est appliqué du côté des établissements.
+Ces rangs constituent une mesure brute de satisfaction individuelle.
+
+\subsection{Satisfaction normalisée}
+
+Afin d’obtenir une mesure globale comparable entre scénarios de tailles différentes, nous utilisons une satisfaction \emph{normalisée} définie sur l’intervalle $[0,1]$.\\
+Étant donné un ensemble de rangs $r_1, r_2, \dots, r_n$ et une longueur maximale de liste $N$, la satisfaction normalisée est définie par :
+\[
+\text{Sat} = 1 - \frac{\frac{1}{n}\sum_{i=1}^{n} r_i}{N - 1}.
+\]\\
+Cette équation exprime une idée simple :
+\begin{itemize}
+    \item si la moyenne des rangs est proche de $0$ (agents satisfaits), la satisfaction est proche de $1$;
+    \item si la moyenne est proche de $N-1$ (agents très insatisfaits), la satisfaction tend vers $0$.
+\end{itemize}
+Cette mesure est cohérente, monotone et facilement interprétable.
+
+\subsection{Interprétation}
+
+La satisfaction normalisée atteint :
+\begin{itemize}
+    \item $1$ si tous les agents obtiennent leur premier choix ;
+    \item $0$ si tous obtiennent leur dernier choix ;
+    \item une valeur intermédiaire si les agents obtiennent des choix moyens.
+\end{itemize}
+La mesure est indépendante de la taille de l’instance, ce qui permet de comparer plusieurs expériences.
+
+\subsection{Exemple}
+
+Considérons trois étudiants, avec les rangs suivants pour l’établissement auquel ils sont affectés :
+\[
+r = [0, 2, 1].
+\]
+Ils ont donc obtenu respectivement leur premier, troisième et deuxième choix.  
+Nous supposons que chaque étudiant a classé $N = 3$ établissements.
+La moyenne des rangs vaut :
+\[
+\bar{r} = \frac{0 + 2 + 1}{3} = 1.
+\]
+La satisfaction normalisée s’écrit alors :
+\[
+\text{Sat} = 1 - \frac{1}{N - 1}\bar{r} 
+           = 1 - \frac{1}{2}(1)
+           = 1 - \frac{1}{2}
+           = 0{,}5.
+\]
+Ainsi, dans cet exemple, la satisfaction du groupe étudiant est de $50\%$.  
+Cette valeur reflète un compromis raisonnable : un étudiant très satisfait, un moyennement satisfait, un moins satisfait.
+
+\subsection{Métriques complémentaires}
+
+La méthode propose également d’autres indicateurs descriptifs :
+\begin{itemize}
+    \item le taux de premiers choix obtenus ;
+    \item le rang moyen et le rang médian ;
+    \item la distribution complète des rangs ;
+\end{itemize}
+L’ensemble de ces mesures offre une analyse complète de la qualité d’une affectation stable.
+
+
+\subsection{Expérimentations}
+Nous avons testé le système sur plusieurs jeux de données variés.  
+Un module dédié permet de :
+\begin{itemize}
+    \item générer de multiples configurations;
+    \item exécuter l’algorithme;
+    \item collecter et archiver les résultats;
+    \item produire des visualisations comme des histogrammes ou des comparaisons de satisfaction.
+\end{itemize}
+Ces expériences permettent d’observer l’influence de la taille du problème et des préférences sur la qualité des appariements.
+
+\medskip
+\subsubsection{Résultats et analyse des scénarios.}\\
+
+Nous avons évalué quatre configurations : \textbf{50$\times$50}, \textbf{100$\times$100}, 
+\textbf{200$\times$200} et \textbf{500$\times$500}.  
+Pour chaque scénario, nous présentons un ensemble de quatre visualisations regroupées
+dans une seule figure :
+\begin{enumerate}
+    \item la distribution des rangs obtenus par les établissements,
+    \item la distribution des rangs obtenus par les étudiants,
+    \item la satisfaction individuelle (par étudiant et par  établissement),
+    \item la satisfaction globale.
+   
+\end{enumerate}
+
+% --- SCÉNARIO 50 ---
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{50x50.png}
+    \caption{Visualisations pour la configuration \textbf{50$\times$50}.}
+    \label{fig:scenario50}
+\end{figure}
+
+% --- SCÉNARIO 100 ---
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{100x100.png}
+    \caption{Visualisations pour la configuration \textbf{100$\times$100}.}
+    \label{fig:scenario100}
+\end{figure}
+
+% --- SCÉNARIO 200 ---
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{200x200.png}
+    \caption{Visualisations pour la configuration \textbf{200$\times$200}.}
+    \label{fig:scenario200}
+\end{figure}
+
+% --- SCÉNARIO 500 ---
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{500x500.png}
+    \caption{Visualisations pour la configuration \textbf{500$\times$500}.}
+    \label{fig:scenario500}
+\end{figure}
+
+Les résultats montrent clairement que les étudiants obtiennent très souvent des rangs faibles, ce qui signifie qu’ils décrochent généralement l’un de leurs premiers choix. Leur niveau de satisfaction reste donc très élevé dans les quatres scénarios (entre 92\% et 97\%), ce qui est normal puisque l’algorithme favorise le côté qui fait les propositions.\\
+Pour les établissements, la situation est plus fluctuante. Leur satisfaction est correcte en 20×20, elle monte nettement en 50×50, puis elle redescend en 100×100. Quand la taille de l’instance augmente, les étudiants sont plus nombreux à entrer en concurrence, et les établissements finissent souvent avec des candidats moins bien classés dans leurs préférences.\\
+De manière générale, les expériences confirment que l’algorithme produit des appariements stables et globalement bons, mais avec un avantage marqué pour les étudiants, ce qui correspond exactement au comportement attendu de la version étudiant-proposant de Gale–Shapley.
+
+\section{Extension : représentations compactes des préférences}
+
+Les préférences complètes sont souvent coûteuses à collecter et peu réalistes dans des systèmes de grande taille.
+Pour rendre le modèle plus fidèle aux pratiques réelles tout en réduisant la charge d’expression imposée aux agents, nous proposons d’intégrer des représentations compactes des préférences, telles que présentées dans le cours IASD.
+Nous détaillons ci-dessous quatre approches adaptées à notre cadre.
+
+\subsection{Préférences par scores}
+Chaque agent attribue un score à chaque partenaire.  
+Les scores permettent de dériver un classement automatiquement.  
+Cette représentation est simple et réduit fortement la quantité d’information à fournir.
+
+\subsection{Priorités (School Choice)}
+Les établissements peuvent exprimer des priorités plutôt qu’un ordre complet: secteur géographique, résultats, critères sociaux, etc. \\
+Cette représentation compacte est celle utilisée dans les systèmes réels d’affectation scolaire.  
+L’algorithme d’acceptation différée peut fonctionner directement sur ces priorités.
+
+\subsection{CP-nets}
+Les CP-nets sont un formalisme puissant pour représenter des préférences structurelles, conditionnelles et multicritères.
+Ils permettent d’exprimer des règles du type :
+\begin{itemize}
+\item « Si la formation est excellente, alors la distance importe peu. »
+    \item « Si deux établissements ont la même réputation, je préfère le plus proche. »
+    \item « Si l’étudiant a d’excellentes notes, la provenance de son école devient moins importante. »
+\end{itemize}
+Chaque CP-net définit :
+\begin{itemize}
+\item des variables de décision (ex : réputation, distance, qualité pour un étudiant ; notes, CV, établissement d’origine pour une école),
+    \item des dépendances conditionnelles entre ces variables,
+    \item des tables de préférences locales (CPT) qui expriment les préférences \emph{ceteris paribus} pour toutes les configurations pertinentes.
+\end{itemize}
+Les CP-nets permettent ainsi aux agents d’exprimer leurs préférences de manière compacte, qualitative et intuitive, conformément au cours.\\
+L’ordre global induit par une CP-net est un ordre partiel, mais il peut être étendu en un ordre total compatible, par exemple via les \emph{worsening flips} .
+Cet ordre total peut alors servir directement de liste de préférences dans Gale--Shapley.
+
+\subsection{Logique Possibiliste}
+
+Lorsque les critères sont indépendants et peuvent être évalués séparément (réputation, distance, coût, qualité…), la logique possibiliste pondérée, présentée, constitue une méthode simple et efficace.\\
+Chaque critère est associé à une formule pondérée $(\varphi_i, a_i)$, où $a_i$ est un degré d’importance.
+Pour chaque établissement (ou étudiant), on calcule une note globale de satisfaction :
+\[
+\pi(\omega) = 1 - \max\{a_i \mid \omega \not\models \varphi_i\}.
+\]
+Plus $\pi(\omega)$ est élevé, plus l’option est satisfaisante.\\
+Cette approche permet d’obtenir aisément un ordre total sur les établissements (côté étudiant) ou sur les étudiants (côté établissement), en triant selon le degré de satisfaction calculé.
+
+\subsection{Notre Choix}
+
+Parmi les différentes représentations compactes étudiées, les CP-nets apparaissent comme la solution la plus adaptée à notre système.
+Elles permettent de modéliser finement les dépendances entre critères, d’exprimer des préférences conditionnelles réalistes et d’obtenir automatiquement un ordre total compatible avec l’algorithme de Gale--Shapley, sans nécessiter aucune modification.
+Grâce à leur expressivité et à leur capacité à capturer des préférences multicritères complexes de manière compacte, les CP-nets constituent le choix naturel pour intégrer des préférences avancées dans notre modèle d’appariement.
+
+\section*{Annexe A — Description technique des modules et classes Python}
+
+Cette annexe présente l’architecture logicielle du projet ainsi que le rôle des principales classes engagées dans l’implémentation du problème du mariage stable.  
+L’objectif est de fournir une vue structurée et exhaustive des composants, sans reproduction du code source, conformément aux exigences du rapport.
+
+\subsection*{A.1. Génération des préférences}
+
+La classe \texttt{GenerateurPreferences} constitue le point d’entrée du système.  
+Elle est paramétrée par le nombre d’étudiants, le nombre d’établissements et une graine pseudo-aléatoire optionnelle.  
+Sa méthode principale, \texttt{generer()}, produit deux structures de type dictionnaire contenant respectivement :
+\begin{itemize}
+    \item les préférences ordinales des étudiants ;
+    \item les préférences ordinales des établissements.
+\end{itemize}
+Chaque préférence est représentée sous la forme d’une permutation stricte de l’ensemble opposé.  
+Ce mécanisme garantit la cohérence des données et leur reproductibilité en cas d’utilisation d’une graine fixe.
+
+\subsection*{A.2. Algorithme d’appariement stable}
+La classe \texttt{AlgorithmeGaleShapley} implémente l’algorithme de Gale et Shapley dans sa version classique à propositions du côté étudiant.  
+Elle reçoit en entrée les deux dictionnaires de préférences.
+
+La méthode \texttt{executer()} orchestre l’ensemble du processus d’appariement.  
+Elle mobilise des structures internes permettant :
+\begin{itemize}
+    \item de maintenir l’ensemble des étudiants non appariés ;
+    \item de suivre, pour chaque étudiant, l’indice de la prochaine proposition ;
+    \item d’enregistrer l’appariement courant du côté des établissements.
+\end{itemize}
+La comparaison entre deux candidats pour un établissement s’appuie sur une fonction interne, \texttt{\_score\_etablissement()}, qui transforme les listes de préférences en scores indexés, facilitant les décisions de remplacement.\\
+Un mécanisme de journalisation, assuré par la méthode \texttt{\_enregistrer\_etape()}, conserve l’état du système à chaque interaction, ce qui permet une analyse a posteriori du comportement de l’algorithme.
+
+\subsection*{A.3. Analyse des résultats}
+
+La classe \texttt{AnalyseurSatisfaction} permet l’évaluation approfondie des appariements produits.  
+Elle repose sur trois types de méthodes :
+\begin{itemize}
+    \item des méthodes de calcul des rangs obtenus par les étudiants et par les établissements ;
+    \item une fonction \texttt{satisfaction\_normalise()} destinée à normaliser les rangs sur une échelle continue ;
+    \item une méthode de synthèse, \texttt{rapport\_complet()}, fournissant un ensemble de métriques : rangs moyens, taux de premiers choix, distributions de rangs, satisfaction globale et coût social.
+\end{itemize}
+La structure retournée par \texttt{rapport\_complet()} sert de base à l’analyse empirique des performances du mécanisme.
+
+\subsection*{A.4. Exécution expérimentale}
+
+La classe \texttt{TesteurAlgorithme} a été conçue pour automatiser la conduite d’expériences sur différents jeux de données.  
+Elle encapsule l’ensemble du processus, depuis la génération des préférences jusqu’à la production des indicateurs d’évaluation.
+Sa méthode centrale, \texttt{tester\_configuration()}, effectue successivement :
+\begin{enumerate}
+    \item la génération des préférences ;
+    \item l’exécution de l’algorithme d’appariement stable ;
+    \item l’analyse de la satisfaction ;
+    \item l’archivage complet des résultats.
+\end{enumerate}
+Chaque exécution génère un enregistrement structuré incluant les paramètres initiaux, l’appariement final, les mesures de satisfaction et l’historique détaillé du processus.
+
+\subsection*{A.5. Visualisations}
+
+Le projet inclut enfin un module dédié à la visualisation, implémenté dans la classe \texttt{Visuals}.
+Cette classe propose une méthode principale, \texttt{dashboard()}, qui génère automatiquement un tableau de bord complet pour chaque scénario testé.
+Chaque dashboard regroupe plusieurs représentations graphiques :
+\begin{itemize}
+\item un histogramme des rangs obtenus par les étudiants ;
+\item un histogramme des rangs obtenus par les établissements ;
+\item une comparaison visuelle des niveaux de satisfaction des deux groupes ;
+\item une représentation de la satisfaction globale ;
+\end{itemize}
+Cette approche centralisée permet de produire, pour chaque configuration, une visualisation cohérente et complète des performances du système.\\
+
+\section{Conclusion}
+
+Ce projet nous a permis de comprendre en profondeur le fonctionnement de l’algorithme du mariage stable, tant sur le plan théorique que pratique. 
+En générant des préférences aléatoires et en observant les résultats obtenus pour différentes tailles de scénarios, nous avons pu analyser la qualité des appariements produits et mesurer la satisfaction des deux groupes. 
+Les expérimentations montrent que l’algorithme parvient à fournir des appariements stables et globalement satisfaisants, tout en révélant certaines variations selon la taille des instances et la structure des préférences.\\
+L’étude des représentations compactes nous a également montré comment le modèle peut être étendu pour mieux s’adapter à des situations réelles, comme l’affectation scolaire ou d’autres systèmes d’allocation. 
+Ce travail nous a ainsi offert une vision complète du problème, de ses applications possibles et des pistes pour aller plus loin dans la modélisation.
+
+
+
+
+
+\end{document}
+
