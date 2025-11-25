@@ -30,7 +30,6 @@ def main() -> None:
             afficher_rapport_console(res["rapport"])
 
     #visuals
-    
     vis = Visuals(testeur)
     vis.dashboard()
 
