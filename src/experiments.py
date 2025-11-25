@@ -7,8 +7,8 @@ Correspond à la question 4 du Projet Stable Marriage.
 from __future__ import annotations
 from typing import Dict, Any, List
 
-from core import GenerateurPreferences, AlgorithmeGaleShapley
-from analysis import AnalyseurSatisfaction
+from src.core import GenerateurPreferences, AlgorithmeGaleShapley
+from src.analysis import AnalyseurSatisfaction
 
 class TesteurAlgorithme:
     def __init__(self) -> None:

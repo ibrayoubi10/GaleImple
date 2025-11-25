@@ -1,6 +1,7 @@
-from experiments import TesteurAlgorithme
-from analysis import afficher_rapport_console
-from visuals import Visuals
+from src.core import GenerateurPreferences, AlgorithmeGaleShapley
+from src.experiments import TesteurAlgorithme
+from src.analysis import afficher_rapport_console
+from src.visuals import Visuals
 
 
 def main() -> None:
